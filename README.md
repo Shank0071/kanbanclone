@@ -14,3 +14,7 @@
 
 ## Tech Stack
 #### Nextjs 13, Prisma, MongoDb
+
+## Todos in the Todo App 😯
+#### To make data persist when the todos are moved across column
+#### And ofcourse some designing work
