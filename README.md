@@ -17,4 +17,4 @@
 
 ## Todos in the Todo App 😯
 #### To make data persist when the todos are moved across column
-#### And ofcourse some designing work
+#### And ofcourse some designing work to make visually appealing
