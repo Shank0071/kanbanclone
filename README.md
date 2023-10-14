@@ -11,3 +11,6 @@
 
 ## Non-Persisting Changes
 #### Moving created tasks across columns. Eg. Unassigned to ToDo...
+
+## Tech Stack
+#### Nextjs 13, Prisma, MongoDb
