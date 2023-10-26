@@ -4,6 +4,7 @@ import type { AuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { prisma } from "prisma/db"
 import { compare } from "bcrypt"
+import { signIn } from "next-auth/react"
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -68,7 +69,10 @@ export const authOptions: AuthOptions = {
       return token
     }
   },
-  session: { strategy: "jwt" }
+  session: { strategy: "jwt" },
+  pages: {
+    signIn: "/signIn"
+  }
 }
 
 const handler = NextAuth(authOptions)

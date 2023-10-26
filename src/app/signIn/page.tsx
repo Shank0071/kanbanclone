@@ -3,10 +3,9 @@
 import { signIn } from "next-auth/react";
 import { ChangeEvent, useState } from "react";
 
-export const RegisterForm = () => {
+const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const [formValues, setFormValues] = useState({
-    name: "",
     email: "",
     password: "",
   });
@@ -15,26 +14,11 @@ export const RegisterForm = () => {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    let email = formValues.email
-    setFormValues({ name: "", email: "", password: "" });
+    let email = formValues.email;
+    // setFormValues({ email: "", password: "" });
 
     try {
-      const res = await fetch("/api/register", {
-        method: "POST",
-        body: JSON.stringify(formValues),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      setLoading(false);
-      if (!res.ok) {
-        console.log("res ", res)
-        setError((await res.json()).message);
-        return;
-      }
-
-      signIn("email", { email, callbackUrl: 'http://localhost:3000'  });
+      signIn("email", { email, callbackUrl: "http://localhost:3000" });
     } catch (error: any) {
       setLoading(false);
       setError(error);
@@ -54,17 +38,7 @@ export const RegisterForm = () => {
       {error && (
         <p className="text-center bg-red-300 py-4 mb-6 rounded">{error}</p>
       )}
-      <div className="mb-6">
-        <input
-          required
-          type="name"
-          name="name"
-          value={formValues.name}
-          onChange={handleChange}
-          placeholder="Name"
-          className={`${input_style}`}
-        />
-      </div>
+
       <div className="mb-6">
         <input
           required
@@ -98,3 +72,6 @@ export const RegisterForm = () => {
     </form>
   );
 };
+
+
+export default SignIn;
