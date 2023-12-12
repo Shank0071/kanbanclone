@@ -6,7 +6,7 @@ import { prisma } from "prisma/db"
 import { compare } from "bcrypt"
 import { signIn } from "next-auth/react"
 
-export const authOptions: NextAuthOptions = {
+export const authOptions: any = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -45,7 +45,7 @@ export const authOptions: NextAuthOptions = {
     })
   ],
   callbacks: {
-    session: ({ session, token }) => {
+    session: ({ session, token }: any) => {
       console.log("Session Callback", {session, token})
       return {
         ...session, 
@@ -56,7 +56,7 @@ export const authOptions: NextAuthOptions = {
         }
       }
     },
-    jwt: ({ token, user }) => {
+    jwt: ({ token, user }: any) => {
       // console.log("JWT Callback", {token, user})
       if (user) {
         const u = user as unknown as any
@@ -68,10 +68,10 @@ export const authOptions: NextAuthOptions = {
       }
       return token
     },
-    async signIn({ user, account, profile, email, credentials}) {
+    async signIn({ user, account, profile, email, credentials}: any) {
       return true
     },
-    async redirect({url, baseUrl}) {
+    async redirect({url, baseUrl}: any) {
       return baseUrl
     }
   },
