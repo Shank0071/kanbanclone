@@ -1,9 +1,17 @@
 import { prisma } from "prisma/db";
 import { hash } from "bcrypt";
 import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/route";
+
+
+export async function GET() {
+  return NextResponse.json("hello")
+}
 
 export async function POST(req: Request) {
   try {
+    
     const { name, email, password } = (await req.json()) as {
       name: string;
       email: string;
@@ -18,6 +26,9 @@ export async function POST(req: Request) {
         password: hashed_password,
       },
     });
+
+
+    console.log("user created:", user)
 
     return NextResponse.json({
       user: {

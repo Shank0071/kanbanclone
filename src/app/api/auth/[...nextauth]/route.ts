@@ -46,7 +46,7 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     session: ({ session, token }) => {
-      // console.log("Session Callback", {session, token})
+      console.log("Session Callback", {session, token})
       return {
         ...session, 
         user: {
@@ -67,12 +67,18 @@ export const authOptions: AuthOptions = {
         }
       }
       return token
+    },
+    async signIn({ user, account, profile, email, credentials}) {
+      return true
+    },
+    async redirect({url, baseUrl}) {
+      return baseUrl
     }
   },
   session: { strategy: "jwt" },
-  pages: {
-    signIn: "/signIn"
-  }
+  // pages: {
+  //   signIn: "/signIn"
+  // }
 }
 
 const handler = NextAuth(authOptions)

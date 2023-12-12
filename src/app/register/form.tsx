@@ -2,8 +2,10 @@
 
 import { signIn } from "next-auth/react";
 import { ChangeEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export const RegisterForm = () => {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [formValues, setFormValues] = useState({
     name: "",
@@ -15,7 +17,6 @@ export const RegisterForm = () => {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    let email = formValues.email
     setFormValues({ name: "", email: "", password: "" });
 
     try {
@@ -29,12 +30,15 @@ export const RegisterForm = () => {
 
       setLoading(false);
       if (!res.ok) {
-        console.log("res ", res)
         setError((await res.json()).message);
         return;
       }
 
-      signIn("email", { email, callbackUrl: 'http://localhost:3000'  });
+      signIn("Credentials", {
+        email: formValues.email,
+        password: formValues.password,
+        // callbackUrl: "http://localhost:3000/",
+      });
     } catch (error: any) {
       setLoading(false);
       setError(error);

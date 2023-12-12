@@ -96,7 +96,7 @@ function Sidebar() {
               <li
                 key={i.id}
                 className={`text-white p-2 font-bold w-full text-right ${
-                  pathname === `/tasks/${i.id}` ? "bg-slate-500" : ""
+                  pathname === `/tasks/${i.id}` ? "bg-slate-700" : ""
                 }`}
               >
                 <Link href={`/tasks/${i.id}`}>{i.name}</Link>
@@ -106,7 +106,7 @@ function Sidebar() {
           {session?.data?.user && (
             <p
               onClick={handleClick}
-              className="text-white flex justify-end w-fit font-bold bg-green-500 ml-auto m-2 rounded-md hover:bg-green-700 cursor-pointer p-2"
+              className="text-white flex justify-end w-fit font-bold bg-green-500 ml-auto m-2 rounded-md hover:bg-green-700 cursor-pointer py-1 px-2"
             >
               +
             </p>
