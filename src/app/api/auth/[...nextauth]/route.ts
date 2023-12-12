@@ -1,12 +1,12 @@
 // import { authenticate } from "@/services/authService"
 import NextAuth from "next-auth"
-import type { AuthOptions } from "next-auth"
+import { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { prisma } from "prisma/db"
 import { compare } from "bcrypt"
 import { signIn } from "next-auth/react"
 
-export const authOptions: AuthOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
