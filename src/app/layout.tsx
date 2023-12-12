@@ -1,3 +1,4 @@
+
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -16,6 +17,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -23,7 +25,7 @@ export default function RootLayout({
         <div className="flex">
           <Sidebar />
           <div className="relative bg-slate-900/50 text-white min-h-screen md:flex-1">
-            <div className="absolute min-h-screen w-full bg-gradient-to-br from-slate-700 via-slate-800 to-purple-900 blur-sm -z-10"></div>
+            <div className="absolute min-h-screen w-full bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 -z-10"></div>
             {children}
           </div>
         </div>

@@ -7,6 +7,7 @@ const Header = () => {
   const { data: session } = useSession();
   const user = session?.user;
 
+
   return (
     <header className="h-20 bg-transparent">
       <nav className="h-full flex justify-end container items-center p-4">
