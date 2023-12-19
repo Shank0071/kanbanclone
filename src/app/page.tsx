@@ -1,7 +1,7 @@
 
 import KanbanBoard from "@/components/KanbanBoard";
 import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/authOptions"
 import { LoginButton, LogoutButton } from "./auth";
 import Link from "next/link";
 import Header from "@/components/header.component";
