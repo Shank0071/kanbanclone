@@ -8,16 +8,6 @@ import { useSession } from "next-auth/react";
 import Modal from "./Modal";
 import { LogoutButton } from "@/app/auth";
 
-// const res = fetch("/api/tasks", {
-//   method: "POST",
-//   body: JSON.stringify({
-//       uItems: [],
-//       doneItems: [],
-//       name: "September",
-//       inprogressItems: [],
-//       todoItems: []
-//   })
-// })
 
 function Sidebar() {
   const router = useRouter();
@@ -81,7 +71,7 @@ function Sidebar() {
         <h1 className="text-center font-bold text-4xl text-white">
           Master
         </h1>
-        <LogoutButton />
+        {session?.data?.user && <LogoutButton />}
       </div>
 
       {loading && (
