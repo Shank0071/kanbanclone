@@ -2,13 +2,13 @@
 
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import axios from "axios";
 
 const Header = () => {
   const { data: session } = useSession();
   const user = session?.user;
 
-  console.log("user:", user)
-
+  console.log("user:", user);
 
   return (
     <header className="h-20 bg-transparent">

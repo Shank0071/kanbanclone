@@ -18,16 +18,21 @@ export async function PATCH(
   const id = params.id;
   let json = await request.json();
 
-  const updatedTask = await prisma.task.update({
-    where: { id },
-    data: json,
-  });
-
-  if (!updatedTask) {
-    return new NextResponse("No user with ID found", { status: 404 });
+  try {
+    const updatedTask = await prisma.task.update({
+      where: { id },
+      data: json,
+    });
+  
+    if (!updatedTask) {
+      return new NextResponse("No user with ID found", { status: 404 });
+    }
+  
+    return NextResponse.json(updatedTask);
+  } catch(error) {
+    console.log("error: ", error)
+    return new NextResponse("An error occurred", { status: 500 })
   }
-
-  return NextResponse.json(updatedTask);
 }
 
 

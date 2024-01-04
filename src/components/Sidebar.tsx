@@ -15,7 +15,6 @@ function Sidebar() {
   const session = useSession();
   const [title, setTitle] = useState(null || "");
 
-  console.log("sidebar:", session);
 
   const [items, setItems] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(false);
@@ -37,7 +36,7 @@ function Sidebar() {
     getLinks();
   }, [showModal]);
 
-  console.log(title);
+
 
   const handleClick = () => {
     setShowModal((prev) => !prev);

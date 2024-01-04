@@ -1,44 +1,46 @@
 "use client";
 
-import { DndContext, DragEndEvent, UniqueIdentifier, rectIntersection, MouseSensor, useSensor, KeyboardSensor, useSensors } from "@dnd-kit/core";
+import {
+  DndContext,
+  DragEndEvent,
+  UniqueIdentifier,
+  rectIntersection,
+  MouseSensor,
+  useSensor,
+  KeyboardSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import KanbanLane from "./KanbanLane";
 import AddCard from "./AddCard";
 import { useState, useEffect } from "react";
 import getUpdatedItemsArray from "@/lib/getUpdatedItemsArray";
 import { Droppable } from "./Droppable/Droppable";
 import { useBoardStore } from "@/store/BoardStore";
-import { FC } from "react";
 import { useSession } from "next-auth/react";
-
-
+import { debounce, createDebouncer } from "@/lib/debounce";
 
 const categoryAddedItems = (arr: any[], cat: string) => {
   const newArr = arr.map((i: any) => {
-    return {...i, category: cat}
-  })
-  return newArr
-}
+    return { ...i, category: cat };
+  });
+  return newArr;
+};
 
-export default function KanbanBoard({id}: {id: any}) {
-
-  const session = useSession()
+export default function KanbanBoard({ id }: { id: any }) {
+  const session = useSession();
 
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {
-      distance: 10
-    }
-  })
+      distance: 10,
+    },
+  });
 
-  const keyboardSensor = useSensor(KeyboardSensor)
-  const sensors = useSensors(mouseSensor, keyboardSensor)
+  const keyboardSensor = useSensor(KeyboardSensor);
+  const sensors = useSensors(mouseSensor, keyboardSensor);
 
-  const [isDragging, setIsDragging] = useState(false); 
-  const [ren, setRen] = useState(false)
-  const {setId, updateTaskById} = useBoardStore();
-
-
-
-
+  const [isDragging, setIsDragging] = useState(false);
+  const [ren, setRen] = useState(false);
+  const { setId, updateTaskById, getBoard } = useBoardStore();
 
   const [
     uItems,
@@ -49,7 +51,7 @@ export default function KanbanBoard({id}: {id: any}) {
     setInProgressItems,
     todoItems,
     setTodoItems,
-   ] = useBoardStore((state) => [
+  ] = useBoardStore((state) => [
     state.uItems,
     state.setUItems,
     state.doneItems,
@@ -57,25 +59,42 @@ export default function KanbanBoard({id}: {id: any}) {
     state.inProgressItems,
     state.setInProgressItems,
     state.todoItems,
-    state.setTodoItems
-   ]);
-
-  console.log(id)
-  console.log(uItems, doneItems)
-
-  // useEffect(() => {
-  //   updateTaskById(id, {uItems: categoryAddedItems(uItems, "UNASSIGNED")})
-  //   updateTaskById(id, {inprogressItems: categoryAddedItems(inProgressItems, "IN_PROGRESS")})
-  //   updateTaskById(id, {doneItems: categoryAddedItems(doneItems, "DONE")})
-  //   updateTaskById(id, {todoItems: categoryAddedItems(todoItems, "TODO")})
-  // }, [todoItems, doneItems, inProgressItems, uItems, id])
+    state.setTodoItems,
+  ]);
 
 
-  const addNewCard = (title: string) => {
-    // setUItems([{title: "hello"}])
+  useEffect(() => {
+    const { debouncedFunction: debouncedUpdateTaskById, cancel } =
+      createDebouncer(updateTaskById, 500);
+    const update = async () => {
+      try {
+        await debouncedUpdateTaskById(id, {
+          uItems: categoryAddedItems(uItems, "UNASSIGNED"),
+          inprogressItems: categoryAddedItems(inProgressItems, "IN_PROGRESS"),
+          doneItems: categoryAddedItems(doneItems, "DONE"),
+          todoItems: categoryAddedItems(todoItems, "TODO")
+        });
+      } catch (error) {
+        console.error("Error updating database:", error);
+      }
+    };
+    update();
+    return () => {
+      cancel();
+    };
+  }, [todoItems, doneItems, inProgressItems, uItems]);
+
+
+
+
+
+
+  const addNewCard = async (title: string) => {
     if (title.length !== 0) {
       setUItems([...uItems, { title: title }]);
-      updateTaskById(id, {uItems: [...uItems, {title: title, category: "UNASSIGNED"}] })
+      await updateTaskById(id, {
+        uItems: [...uItems, { title: title, category: "UNASSIGNED" }],
+      });
     }
   };
 
@@ -97,12 +116,12 @@ export default function KanbanBoard({id}: {id: any}) {
       } else if (e.active.data.current?.parent === "Unassigned") {
         const updatedUItems = getUpdatedItemsArray(uItems, t);
         setUItems(updatedUItems);
-        console.log(updatedUItems)
+        console.log(updatedUItems);
       } else {
         const updatedInProgress = getUpdatedItemsArray(inProgressItems, t);
         setInProgressItems(updatedInProgress);
       }
-  
+
       return;
     }
 
@@ -132,7 +151,7 @@ export default function KanbanBoard({id}: {id: any}) {
     } else {
       setInProgressItems([...inProgressItems, { title }]);
     }
-    if (parent === "ToDo") {    
+    if (parent === "ToDo") {
       setTodoItems([
         ...todoItems.splice(0, index),
         ...todoItems.splice(index + 1),
@@ -151,13 +170,9 @@ export default function KanbanBoard({id}: {id: any}) {
       ]);
     }
     setIsDragging(false);
-   
   };
 
-
-
   // console.log("dragging", isDragging);
-
 
   return (
     <DndContext
@@ -168,7 +183,7 @@ export default function KanbanBoard({id}: {id: any}) {
       onDragEnd={(e) => {
         handleOnDragEnd(e);
         setIsDragging(false);
-        setRen(prev => !prev)  
+        setRen((prev) => !prev);
       }}
     >
       <div className="flex justify-center">

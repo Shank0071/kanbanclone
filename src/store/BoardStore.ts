@@ -12,6 +12,7 @@ interface BoardState {
   todoItems: Cards[];
   setTodoItems: (items: Cards[]) => void;
   updateTaskById: (id: string, task: any) => void;
+  getBoard: (id: string) => void;
 }
 
 export const useBoardStore = create<BoardState>((set, get) => ({
@@ -40,6 +41,16 @@ export const useBoardStore = create<BoardState>((set, get) => ({
       return data;
     } catch (err) {
       console.log(`An error occurred ${err}`);
+    }
+  },
+  getBoard: async (id: string) => {
+    const url = `/api/tasks/${id}`;
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      return data;
+    } catch (err) {
+      console.log("An error occurred: ", err);
     }
   },
 }));
