@@ -9,7 +9,7 @@
 ## Persistant Changes
 #### Adding Unassigned tasks
 
-## Non-Persisting Changes
+## Non-Persisting Changes (Addressed)
 #### Moving created tasks across columns. Eg. Unassigned to ToDo...
 
 ## Tech Stack
@@ -23,4 +23,4 @@
 ## Issues Addressed
 #### The redirection issue was due to the callbackUrl set by default to /api/tasks, So, redirect function had to be used and baseUrl had to be returned there
 #### The deployment issue was addressed by moving authOptions to lib folder
-
+#### Moving created tasks across columns is persisted and the issue was addressed by using debounce to prevent unnecessary api calls
